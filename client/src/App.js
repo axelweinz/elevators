@@ -18,7 +18,7 @@ function App() {
       }
     }
 
-    const interval = setInterval(() => {
+    setInterval(() => {
       getLifts();
     }, 2000);
   }, []);
@@ -27,20 +27,25 @@ function App() {
     if (Number.isInteger(floor)) {
       axios.put("http://localhost:9000/lift", { floorCalled: floor });  
     } else {
-      axios.put("http://localhost:9000/lift", { floorCalled: parseInt(floor.target.value) });
+      axios.put("http://localhost:9000/lift", { floorCalled: parseInt(document.getElementById("floorSelection").value) });
     }
   }
 
   return (
     <div className="App">
       <header className="App-header">
+        <h2>
+          Top row represents elevator positions. <br/>
+          Bottom row represent elevator direction.
+        </h2>
         <h1>
           {lifts.pos[0]} {lifts.pos[1]} {lifts.pos[2]} {lifts.pos[3]} {lifts.pos[4]}
         </h1>
         <h1>
           {lifts.dir[0]} {lifts.dir[1]} {lifts.dir[2]} {lifts.dir[3]} {lifts.dir[4]}
         </h1>
-        <input type="number" min="0" max="20" onChange={callLift}></input>
+        <input id="floorSelection" type="number" min="0" max="20" defaultValue="0"></input>
+        <button onClick={callLift} style={{padding: "4px", margin: "8px"}}>Call Elevator</button>
       </header>
     </div>
   );
