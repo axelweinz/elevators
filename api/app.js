@@ -9,6 +9,7 @@ const liftRouter = require("./routes/lift");
 
 const app = express();
 global.globalLifts = [{pos: 0, dir: 0, goal: 0}, {pos: 0, dir: 0, goal: 0}, {pos: 0, dir: 0, goal: 0}, {pos: 0, dir: 0, goal: 0}, {pos: 0, dir: 0, goal: 0}];
+global.globalQueue = [];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
