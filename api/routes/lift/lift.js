@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const simLiftMove = require("../utils/simLiftMove");
-const calcLift = require("../utils/calcLift");
+const simLiftMove = require("../../utils/simLiftMove/simLiftMove");
+const calcLift = require("../../utils/calcLift/calcLift");
 
 router.get("/", function(req, res, next) {
     res.send({globalLifts, globalQueue}).status(200);

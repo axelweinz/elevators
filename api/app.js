@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require("cors");
 
-const liftRouter = require("./routes/lift");
+const liftRouter = require("./routes/lift/lift");
 
 const app = express();
 global.globalLifts = [{pos: 0, dir: 0, goal: 0}, {pos: 0, dir: 0, goal: 0}, {pos: 0, dir: 0, goal: 0}, {pos: 0, dir: 0, goal: 0}, {pos: 0, dir: 0, goal: 0}];
