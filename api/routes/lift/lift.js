@@ -9,6 +9,7 @@ router.get("/", function(req, res, next) {
 
 router.put("/", function(req, res, next) {
     const floorCalled = req.body.floorCalled;
+    console.log(floorCalled);
 
     let closestLift = 0;
     let closestDistance = 1000;

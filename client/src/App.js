@@ -13,7 +13,9 @@ function App() {
     const getLifts = async () => {
       const { data } = await axios.get("http://localhost:9000/lift");
       setLifts({pos: data.globalLifts.map(a => a.pos), dir: data.globalLifts.map(a => a.dir)});
+      console.log(data.globalQueue);
       if (data.globalQueue.length !== 0 && data.globalLifts.map(a => a.dir).includes(0)) {
+        console.log("THE Q" + data.globalQueue[0]);
         callLift(data.globalQueue[0]);
       }
     }
@@ -22,6 +24,18 @@ function App() {
       getLifts();
     }, 2000);
   }, []);
+
+  // const callLift = floor => {
+  //   console.log(Number.isInteger(floor));
+  //   if (!Number.isInteger.floor) {
+  //     floor = parseInt(document.getElementById("floorSelection").value);
+  //   }
+  //   if (floor <=20 && floor >= 0) {
+  //     axios.put("http://localhost:9000/lift", { floorCalled: floor });
+  //   } else {
+  //     alert("Floor N/A")
+  //   }
+  // }
 
   const callLift = floor => {
     if (Number.isInteger(floor)) {
