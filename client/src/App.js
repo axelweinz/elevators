@@ -13,9 +13,7 @@ function App() {
     const getLifts = async () => {
       const { data } = await axios.get("http://localhost:9000/lift");
       setLifts({pos: data.globalLifts.map(a => a.pos), dir: data.globalLifts.map(a => a.dir)});
-      console.log(data.globalQueue);
-      if (data.globalQueue.length !== 0 && data.globalLifts.map(a => a.dir).includes(0)) {
-        console.log("THE Q" + data.globalQueue[0]);
+      if (data.globalQueue.length !== 0) {
         callLift(data.globalQueue[0]);
       }
     }
@@ -25,23 +23,22 @@ function App() {
     }, 2000);
   }, []);
 
-  // const callLift = floor => {
-  //   console.log(Number.isInteger(floor));
-  //   if (!Number.isInteger.floor) {
-  //     floor = parseInt(document.getElementById("floorSelection").value);
-  //   }
-  //   if (floor <=20 && floor >= 0) {
-  //     axios.put("http://localhost:9000/lift", { floorCalled: floor });
-  //   } else {
-  //     alert("Floor N/A")
-  //   }
-  // }
-
   const callLift = floor => {
+    let realFloor = false;
     if (Number.isInteger(floor)) {
-      axios.put("http://localhost:9000/lift", { floorCalled: floor });  
+      if (floor <= 20 && floor >= 0) {
+        realFloor = true;
+        axios.put("http://localhost:9000/lift", { floorCalled: floor });
+      }  
     } else {
-      axios.put("http://localhost:9000/lift", { floorCalled: parseInt(document.getElementById("floorSelection").value) });
+      const inputFloor = parseInt(document.getElementById("floorSelection").value);
+      if (inputFloor <= 20 && inputFloor >= 0) {
+        realFloor = true;
+        axios.put("http://localhost:9000/lift", { floorCalled: inputFloor });
+      }
+    }
+    if (!realFloor) {
+      alert("Floor N/A");
     }
   }
 

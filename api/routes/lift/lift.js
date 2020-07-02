@@ -8,34 +8,37 @@ router.get("/", function(req, res, next) {
 });
 
 router.put("/", function(req, res, next) {
-    const floorCalled = req.body.floorCalled;
-    console.log(floorCalled);
+    try {
+        const floorCalled = req.body.floorCalled;
 
-    let closestLift = 0;
-    let closestDistance = 1000;
-    let available = false;
-    for (lift in globalLifts) {
-        const { eligible, distance } = calcLift(lift, floorCalled);
-        if (eligible && distance < closestDistance) {
-            closestLift = lift;
-            closestDistance = distance;
-            available = true;
-        }
-    }
-    
-    if (globalLifts[closestLift].dir === 0) {
-        for (let i = globalQueue.length-1; i >= 0; i--) {
-            const { eligible } = calcLift(closestLift, globalQueue[i]);
-            if (eligible) {
-                globalQueue.splice(i, 1);
+        let closestLift = 0;
+        let closestDistance = 1000;
+        let available = false;
+        for (lift in globalLifts) {
+            const { eligible, distance } = calcLift(lift, floorCalled);
+            if (eligible && distance < closestDistance) {
+                closestLift = lift;
+                closestDistance = distance;
+                available = true;
             }
         }
-        simLiftMove(closestLift, floorCalled);
-    } else if (!available && !globalQueue.includes(floorCalled)) {
-        globalQueue.push(floorCalled);
+        
+        if (globalLifts[closestLift].dir === 0) {
+            if (globalQueue.length > 0) {
+                globalQueue.splice(0, 1);
+            }
+            simLiftMove(closestLift, floorCalled);
+        } else if (!available && !globalQueue.includes(floorCalled)) {
+            globalQueue.push(floorCalled);
+        } else if (available && globalQueue.length > 0) {
+            globalQueue.splice(0, 1);
+        }
+        
+        res.sendStatus(200);
+    } catch (e) {
+        console.error(e);
+        res.sendStatus(500);
     }
-    
-    res.sendStatus(200);
 });
 
 module.exports = router;
